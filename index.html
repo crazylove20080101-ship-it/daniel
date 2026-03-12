@@ -7,6 +7,11 @@
   <title>2026 LIGHT UP! 街舞事工研習營</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+    /* 讓整個網頁捲動時更平滑 */
+    html {
+      scroll-behavior: smooth;
+    }
+
     :root {
       --bg-color: #0d1117;
       --card-bg: #161b22;
@@ -15,6 +20,7 @@
       --text-main: #ffffff;
       --text-sub: #8b949e;
       --border-color: #30363d;
+      --nav-bg: #ffffff;
     }
 
     body {
@@ -22,32 +28,81 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       margin: 0; padding: 0;
-      display: flex; flex-direction: column; align-items: center;
     }
 
-    .header-container { width: 100%; max-width: 1000px; padding: 20px; text-align: left; }
+    /* 導覽列：點擊會跳轉到對應 ID 區塊 */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      background: var(--nav-bg);
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      gap: 40px;
+    }
+    .nav-item {
+      color: #333;
+      font-size: 18px;
+      font-weight: 800;
+      padding: 10px 5px;
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 5px solid transparent;
+    }
+    .nav-item:hover {
+      border-bottom: 5px solid var(--accent-yellow);
+    }
+
+    .header-container { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
     .logo { width: 150px; margin-bottom: 20px; }
-    .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    
+    .banner-wrapper { position: relative; width: 95%; max-width: 1000px; }
+    .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; }
+    
+    .banner-btn {
+      position: absolute;
+      left: 40px;
+      bottom: 40px;
+      padding: 12px 25px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    .banner-btn:hover { transform: scale(1.05); background: var(--accent-yellow); }
 
-    .main-wrapper { display: flex; max-width: 1000px; width: 95%; gap: 40px; margin: 40px 0; flex-wrap: wrap; }
+    .main-wrapper { max-width: 1000px; width: 95%; margin: 40px auto; }
 
-    .info-section { flex: 1.2; min-width: 320px; }
+    /* 各區塊設定 */
+    section { padding: 60px 0; border-top: 1px solid var(--border-color); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+
     .title { font-size: 32px; font-weight: 800; color: var(--accent-blue); margin-bottom: 10px; }
     .price-tag { font-size: 28px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; }
-    
-    .content-block { margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 30px; }
     .block-title { font-size: 22px; color: var(--accent-yellow); margin-bottom: 20px; border-left: 4px solid var(--accent-yellow); padding-left: 10px; }
-    
-    .workshop-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+    .workshop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
     .workshop-card { background: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); font-size: 14px; }
     .workshop-card h4 { color: var(--accent-blue); margin-top: 0; }
-
     .timeline-item { position: relative; padding-left: 30px; margin-bottom: 20px; border-left: 2px solid var(--accent-blue); }
     .timeline-item::before { content: ''; position: absolute; left: -7px; top: 5px; width: 12px; height: 12px; background: var(--accent-blue); border-radius: 50%; }
     .day-label { font-weight: bold; color: var(--accent-yellow); margin-right: 10px; }
 
-    .form-section { flex: 1; min-width: 320px; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); position: sticky; top: 20px; height: fit-content; }
-    .form-group { margin-bottom: 20px; }
+    /* 表單區塊樣式 */
+    .form-section { 
+      background: var(--card-bg); 
+      padding: 40px; 
+      border-radius: 20px; 
+      border: 1px solid var(--border-color); 
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    .form-group { margin-bottom: 20px; text-align: left; }
     .form-label { display: block; font-size: 12px; color: var(--accent-blue); margin-bottom: 8px; font-weight: bold; }
     input, select { width: 100%; padding: 12px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 8px; color: white; box-sizing: border-box; }
     .btn-submit { width: 100%; padding: 16px; background-color: var(--accent-yellow); color: #000; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
@@ -55,18 +110,27 @@
 
     #success-msg { display: none; text-align: center; background: rgba(46, 125, 50, 0.2); border: 1px solid #4caf50; padding: 20px; border-radius: 10px; color: #81c784; margin-top: 20px; }
 
-    @media (max-width: 768px) { .workshop-grid { grid-template-columns: 1fr; } .main-wrapper { flex-direction: column; } .form-section { position: relative; } }
+    @media (max-width: 768px) { .workshop-grid { grid-template-columns: 1fr; } .banner-btn { left: 20px; bottom: 20px; } }
   </style>
 </head>
 <body>
 
-  <div class="header-container">
+  <nav class="navbar">
+    <a href="#info-top" class="nav-item">活動資訊</a>
+    <a href="#registration" class="nav-item">立刻報名</a>
+  </nav>
+
+  <div class="header-container" id="info-top">
     <img src="https://i.ibb.co/gLwmcxSK/Lightup-png.png" alt="Logo" class="logo">
-    <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
+    <div class="banner-wrapper">
+        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
+        <button class="banner-btn" onclick="document.getElementById('registration').scrollIntoView({behavior: 'smooth'})">點擊報名</button>
+    </div>
   </div>
 
   <div class="main-wrapper">
-    <div class="info-section">
+    
+    <section>
       <div class="title">2026 LIGHT UP! 第二屆街舞事工研習營</div>
       <div class="price-tag">$ 2500 <span>/ 超早鳥票</span></div>
       
@@ -89,54 +153,52 @@
             <p>目標：提升街舞技巧，讓技術成為敬拜的基礎。</p>
           </div>
         </div>
-        <p style="font-size: 14px; color: var(--text-sub);">* 包含 LIGHT UP TALK 與 HIPHOP Worship Party</p>
       </div>
 
       <div class="content-block">
         <div class="block-title">活動流程</div>
-        <div class="timeline-item">
-          <span class="day-label">Day 1</span> 報到暖身、大會舞教學、異象與呼召信息
-        </div>
-        <div class="timeline-item">
-          <span class="day-label">Day 2</span> 四堂專業工作坊、HIPHOP Worship Night
-        </div>
-        <div class="timeline-item">
-          <span class="day-label">Day 3</span> MV拍攝、友誼 Battle、LIGHT UP TALK 與差派
-        </div>
+        <div class="timeline-item"><span class="day-label">Day 1</span> 報到暖身、大會舞教學、異象與呼召信息</div>
+        <div class="timeline-item"><span class="day-label">Day 2</span> 四堂專業工作坊、HIPHOP Worship Night</div>
+        <div class="timeline-item"><span class="day-label">Day 3</span> MV拍攝、友誼 Battle、LIGHT UP TALK 與差派</div>
       </div>
-    </div>
+    </section>
 
-    <div class="form-section">
-      <form id="regForm">
-        <div class="form-group">
-          <label class="form-label">STEP 1 - 預約方案 PLAN</label>
-          <select name="plan">
-            <option value="超早鳥票 $2500 3日營隊">超早鳥票 $2500 3日營隊</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">STEP 2 - 姓名 NAME</label>
-          <input type="text" name="name" placeholder="請輸入姓名" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">STEP 3 - 電話 PHONE</label>
-          <input type="tel" name="phone" placeholder="0912-345-678" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">STEP 4 - 郵件信箱 EMAIL</label>
-          <input type="email" name="email" placeholder="example@mail.com" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">STEP 5 - 推薦人 REFERRER</label>
-          <input type="text" name="ref" placeholder="選填">
-        </div>
-        <button type="submit" class="btn-submit" id="submitBtn">立刻報名 BOOKING</button>
-      </form>
-      <div id="success-msg"></div>
-    </div>
+    <section id="registration">
+      <div class="form-section">
+        <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">填寫報名表單</h2>
+        <form id="regForm">
+          <div class="form-group">
+            <label class="form-label">STEP 1 - 預約方案 PLAN</label>
+            <select name="plan">
+              <option value="超早鳥票 $2500 3日營隊">超早鳥票 $2500 3日營隊</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">STEP 2 - 姓名 NAME</label>
+            <input type="text" name="name" placeholder="請輸入姓名" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">STEP 3 - 電話 PHONE</label>
+            <input type="tel" name="phone" placeholder="0912-345-678" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">STEP 4 - 郵件信箱 EMAIL</label>
+            <input type="email" name="email" placeholder="example@mail.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">STEP 5 - 推薦人 REFERRER</label>
+            <input type="text" name="ref" placeholder="選填">
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
+        </form>
+        <div id="success-msg"></div>
+      </div>
+    </section>
+
   </div>
 
   <script>
+    // 表單提交邏輯
     const form = document.getElementById('regForm');
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -146,34 +208,26 @@
       btn.disabled = true;
 
       const gasUrl = "https://script.google.com/macros/s/AKfycbxHlXNXDcEWCgErktxk2p4ZRv5LgQGoO6yRE3HjoRSexOVmALNxBgQht9tg2JAe_kpyXw/exec";
-
-      // 1. 將 FormData 轉換成單純的 JavaScript 物件，以便轉成 JSON
       const plainFormData = Object.fromEntries(formData.entries());
 
-      // 2. 使用 fetch 發送 POST 請求 (移除 mode: 'no-cors'，並改傳 JSON 字串)
       fetch(gasUrl, {
         method: 'POST',
-        // 為了避免跨域 (CORS) 擋截，我們不特別設定 Content-Type 為 application/json，
-        // 而是直接傳字串，GAS 後端一樣可以用 JSON.parse 解析
         body: JSON.stringify(plainFormData) 
       })
-      .then(response => response.json()) // 解析 GAS 回傳的 JSON 訊息
+      .then(response => response.json())
       .then(data => {
         if (data.status === "success") {
-          // 報名成功，顯示成功訊息
           form.style.display = 'none';
           const msg = document.getElementById('success-msg');
           msg.innerHTML = "<h4>🎉 感謝報名！</h4>後續請依指示做匯款確認。";
           msg.style.display = 'block';
         } else {
-          // 如果 GAS 發生錯誤 (例如寄信失敗)，顯示錯誤訊息
           alert("系統發生錯誤：" + data.message);
           btn.disabled = false;
           btn.innerHTML = '立刻報名 BOOKING';
         }
       })
       .catch(err => {
-        console.error(err);
         alert("網路異常或系統忙碌中，請稍後再試！");
         btn.disabled = false;
         btn.innerHTML = '立刻報名 BOOKING';
