@@ -15,7 +15,6 @@
       --text-main: #ffffff;
       --text-sub: #8b949e;
       --border-color: #30363d;
-      --nav-bg: #ffffff; /* 導覽列維持截圖中的白色 */
     }
 
     body {
@@ -23,95 +22,31 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       margin: 0; padding: 0;
+      display: flex; flex-direction: column; align-items: center;
     }
 
-    /* --- 新增：導覽列樣式 --- */
-    .navbar {
-      display: flex;
-      justify-content: center;
-      background: var(--nav-bg);
-      padding: 10px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      gap: 40px;
-    }
-    .nav-item {
-      color: #333;
-      font-size: 18px;
-      font-weight: 800;
-      padding: 10px 5px;
-      cursor: pointer;
-      transition: 0.3s;
-      border-bottom: 5px solid transparent;
-    }
-    .nav-item.active {
-      border-bottom: 5px solid var(--accent-yellow);
-    }
-
-    .header-container { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+    .header-container { width: 100%; max-width: 1000px; padding: 20px; text-align: left; }
     .logo { width: 150px; margin-bottom: 20px; }
-    
-    /* Banner 容器，用來放按鈕 */
-    .banner-wrapper { 
-      position: relative; 
-      width: 95%; 
-      max-width: 1000px; 
-    }
-    .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; }
-    
-    /* Banner 上的報名按鈕 */
-    .banner-btn {
-      position: absolute;
-      left: 40px;
-      bottom: 40px;
-      padding: 12px 25px;
-      background: white;
-      color: black;
-      font-weight: bold;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: 0.3s;
-    }
-    .banner-btn:hover { transform: scale(1.05); background: var(--accent-yellow); }
+    .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-    /* 主要內容容器 */
-    .main-wrapper { 
-      max-width: 1000px; 
-      width: 95%; 
-      margin: 40px auto; 
-    }
+    .main-wrapper { display: flex; max-width: 1000px; width: 95%; gap: 40px; margin: 40px 0; flex-wrap: wrap; }
 
-    /* 每個 Page 的預設樣式 */
-    .page-content { display: none; width: 100%; }
-    .page-content.active { display: block; animation: fadeIn 0.5s ease; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* 原有組件樣式保持不變 */
+    .info-section { flex: 1.2; min-width: 320px; }
     .title { font-size: 32px; font-weight: 800; color: var(--accent-blue); margin-bottom: 10px; }
     .price-tag { font-size: 28px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; }
+    
     .content-block { margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 30px; }
     .block-title { font-size: 22px; color: var(--accent-yellow); margin-bottom: 20px; border-left: 4px solid var(--accent-yellow); padding-left: 10px; }
-    .workshop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+    
+    .workshop-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px; }
     .workshop-card { background: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); font-size: 14px; }
     .workshop-card h4 { color: var(--accent-blue); margin-top: 0; }
+
     .timeline-item { position: relative; padding-left: 30px; margin-bottom: 20px; border-left: 2px solid var(--accent-blue); }
     .timeline-item::before { content: ''; position: absolute; left: -7px; top: 5px; width: 12px; height: 12px; background: var(--accent-blue); border-radius: 50%; }
     .day-label { font-weight: bold; color: var(--accent-yellow); margin-right: 10px; }
 
-    /* 表單區塊單獨拉出來的樣式 */
-    .form-section { 
-      background: var(--card-bg); 
-      padding: 40px; 
-      border-radius: 20px; 
-      border: 1px solid var(--border-color); 
-      max-width: 600px;
-      margin: 0 auto;
-    }
+    .form-section { flex: 1; min-width: 320px; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border-color); position: sticky; top: 20px; height: fit-content; }
     .form-group { margin-bottom: 20px; }
     .form-label { display: block; font-size: 12px; color: var(--accent-blue); margin-bottom: 8px; font-weight: bold; }
     input, select { width: 100%; padding: 12px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 8px; color: white; box-sizing: border-box; }
@@ -120,123 +55,88 @@
 
     #success-msg { display: none; text-align: center; background: rgba(46, 125, 50, 0.2); border: 1px solid #4caf50; padding: 20px; border-radius: 10px; color: #81c784; margin-top: 20px; }
 
-    @media (max-width: 768px) { 
-        .workshop-grid { grid-template-columns: 1fr; } 
-        .banner-btn { left: 20px; bottom: 20px; font-size: 14px; }
-    }
+    @media (max-width: 768px) { .workshop-grid { grid-template-columns: 1fr; } .main-wrapper { flex-direction: column; } .form-section { position: relative; } }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <div id="nav-home" class="nav-item active" onclick="switchPage('home')">首頁</div>
-    <div id="nav-form" class="nav-item" onclick="switchPage('form')">報名表單</div>
-  </nav>
-
   <div class="header-container">
     <img src="https://i.ibb.co/gLwmcxSK/Lightup-png.png" alt="Logo" class="logo">
-    <div class="banner-wrapper">
-        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
-        <button class="banner-btn" onclick="switchPage('form')">立刻報名</button>
-    </div>
+    <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
   </div>
 
   <div class="main-wrapper">
-    <div id="page-home" class="page-content active">
-        <div class="info-section">
-          <div class="title">2026 LIGHT UP! 第二屆街舞事工研習營</div>
-          <div class="price-tag">$ 2500 <span>/ 超早鳥票</span></div>
-          
-          <p><i class="fa-solid fa-location-dot" style="color:var(--accent-yellow)"></i> 救世傳播協會 (台北市中山區大直街62巷10號)</p>
-          <p><i class="fa-solid fa-calendar-days" style="color:var(--accent-yellow)"></i> 2026/06/18(四) - 06/20(六)</p>
-    
-          <div class="content-block">
-            <div class="block-title">活動架構</div>
-            <div class="workshop-grid">
-              <div class="workshop-card">
-                <h4>作品類</h4>
-                <p>目標：完成一支敬拜舞/福音舞作品。</p>
-              </div>
-              <div class="workshop-card">
-                <h4>服事類</h4>
-                <p>目標：建立敬拜舞者的身分認同與服事能力。</p>
-              </div>
-              <div class="workshop-card">
-                <h4>技術類</h4>
-                <p>目標：提升街舞技巧，讓技術成為敬拜的基礎。</p>
-              </div>
-            </div>
-            <p style="font-size: 14px; color: var(--text-sub);">* 包含 LIGHT UP TALK 與 HIPHOP Worship Party</p>
+    <div class="info-section">
+      <div class="title">2026 LIGHT UP! 第二屆街舞事工研習營</div>
+      <div class="price-tag">$ 2500 <span>/ 超早鳥票</span></div>
+      
+      <p><i class="fa-solid fa-location-dot" style="color:var(--accent-yellow)"></i> 救世傳播協會 (台北市中山區大直街62巷10號)</p>
+      <p><i class="fa-solid fa-calendar-days" style="color:var(--accent-yellow)"></i> 2026/06/18(四) - 06/20(六)</p>
+
+      <div class="content-block">
+        <div class="block-title">活動架構</div>
+        <div class="workshop-grid">
+          <div class="workshop-card">
+            <h4>作品類</h4>
+            <p>目標：完成一支敬拜舞/福音舞作品。</p>
           </div>
-    
-          <div class="content-block">
-            <div class="block-title">活動流程</div>
-            <div class="timeline-item">
-              <span class="day-label">Day 1</span> 報到暖身、大會舞教學、異象與呼召信息
-            </div>
-            <div class="timeline-item">
-              <span class="day-label">Day 2</span> 四堂專業工作坊、HIPHOP Worship Night
-            </div>
-            <div class="timeline-item">
-              <span class="day-label">Day 3</span> MV拍攝、友誼 Battle、LIGHT UP TALK 與差派
-            </div>
+          <div class="workshop-card">
+            <h4>服事類</h4>
+            <p>目標：建立敬拜舞者的身分認同與服事能力。</p>
+          </div>
+          <div class="workshop-card">
+            <h4>技術類</h4>
+            <p>目標：提升街舞技巧，讓技術成為敬拜的基礎。</p>
           </div>
         </div>
+        <p style="font-size: 14px; color: var(--text-sub);">* 包含 LIGHT UP TALK 與 HIPHOP Worship Party</p>
+      </div>
+
+      <div class="content-block">
+        <div class="block-title">活動流程</div>
+        <div class="timeline-item">
+          <span class="day-label">Day 1</span> 報到暖身、大會舞教學、異象與呼召信息
+        </div>
+        <div class="timeline-item">
+          <span class="day-label">Day 2</span> 四堂專業工作坊、HIPHOP Worship Night
+        </div>
+        <div class="timeline-item">
+          <span class="day-label">Day 3</span> MV拍攝、友誼 Battle、LIGHT UP TALK 與差派
+        </div>
+      </div>
     </div>
 
-    <div id="page-form" class="page-content">
-        <div class="form-section">
-          <h2 style="color: var(--accent-yellow); margin-top: 0;">立刻報名</h2>
-          <form id="regForm">
-            <div class="form-group">
-              <label class="form-label">STEP 1 - 預約方案 PLAN</label>
-              <select name="plan">
-                <option value="超早鳥票 $2500 3日營隊">超早鳥票 $2500 3日營隊</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">STEP 2 - 姓名 NAME</label>
-              <input type="text" name="name" placeholder="請輸入姓名" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">STEP 3 - 電話 PHONE</label>
-              <input type="tel" name="phone" placeholder="0912-345-678" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">STEP 4 - 郵件信箱 EMAIL</label>
-              <input type="email" name="email" placeholder="example@mail.com" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">STEP 5 - 推薦人 REFERRER</label>
-              <input type="text" name="ref" placeholder="選填">
-            </div>
-            <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
-          </form>
-          <div id="success-msg"></div>
+    <div class="form-section">
+      <form id="regForm">
+        <div class="form-group">
+          <label class="form-label">STEP 1 - 預約方案 PLAN</label>
+          <select name="plan">
+            <option value="超早鳥票 $2500 3日營隊">超早鳥票 $2500 3日營隊</option>
+          </select>
         </div>
+        <div class="form-group">
+          <label class="form-label">STEP 2 - 姓名 NAME</label>
+          <input type="text" name="name" placeholder="請輸入姓名" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">STEP 3 - 電話 PHONE</label>
+          <input type="tel" name="phone" placeholder="0912-345-678" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">STEP 4 - 郵件信箱 EMAIL</label>
+          <input type="email" name="email" placeholder="example@mail.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">STEP 5 - 推薦人 REFERRER</label>
+          <input type="text" name="ref" placeholder="選填">
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">立刻報名 BOOKING</button>
+      </form>
+      <div id="success-msg"></div>
     </div>
   </div>
 
   <script>
-    // --- 新增：切換頁面邏輯 ---
-    function switchPage(pageId) {
-        // 1. 切換內容顯示
-        document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
-        document.getElementById('page-' + pageId).classList.add('active');
-
-        // 2. 切換導覽列底線
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        document.getElementById('nav-' + pageId).classList.add('active');
-
-        // 3. 如果是切換到表單，自動滾動到下方
-        if(pageId === 'form') {
-            window.scrollTo({ top: 300, behavior: 'smooth' });
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    // --- 原有：表單提交邏輯 (保持不變) ---
     const form = document.getElementById('regForm');
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -246,26 +146,34 @@
       btn.disabled = true;
 
       const gasUrl = "https://script.google.com/macros/s/AKfycbxHlXNXDcEWCgErktxk2p4ZRv5LgQGoO6yRE3HjoRSexOVmALNxBgQht9tg2JAe_kpyXw/exec";
+
+      // 1. 將 FormData 轉換成單純的 JavaScript 物件，以便轉成 JSON
       const plainFormData = Object.fromEntries(formData.entries());
 
+      // 2. 使用 fetch 發送 POST 請求 (移除 mode: 'no-cors'，並改傳 JSON 字串)
       fetch(gasUrl, {
         method: 'POST',
+        // 為了避免跨域 (CORS) 擋截，我們不特別設定 Content-Type 為 application/json，
+        // 而是直接傳字串，GAS 後端一樣可以用 JSON.parse 解析
         body: JSON.stringify(plainFormData) 
       })
-      .then(response => response.json())
+      .then(response => response.json()) // 解析 GAS 回傳的 JSON 訊息
       .then(data => {
         if (data.status === "success") {
+          // 報名成功，顯示成功訊息
           form.style.display = 'none';
           const msg = document.getElementById('success-msg');
           msg.innerHTML = "<h4>🎉 感謝報名！</h4>後續請依指示做匯款確認。";
           msg.style.display = 'block';
         } else {
+          // 如果 GAS 發生錯誤 (例如寄信失敗)，顯示錯誤訊息
           alert("系統發生錯誤：" + data.message);
           btn.disabled = false;
           btn.innerHTML = '立刻報名 BOOKING';
         }
       })
       .catch(err => {
+        console.error(err);
         alert("網路異常或系統忙碌中，請稍後再試！");
         btn.disabled = false;
         btn.innerHTML = '立刻報名 BOOKING';
