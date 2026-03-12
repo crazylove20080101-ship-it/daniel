@@ -147,11 +147,12 @@
 
       const gasUrl = "https://script.google.com/macros/s/AKfycbyg26ivX3BA87V0oa82125G-6Zecf0Wj_A0SxHNX-w1V7s2kWXjN8r_aUp_8hVBTZAD/exec";
 
-      fetch(gasUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: new URLSearchParams(formData)
-      })
+      // 在 index.html 的 <script> 標籤內
+fetch(gasUrl, {
+  method: 'POST',
+  mode: 'no-cors', 
+  body: new URLSearchParams(new FormData(form)) // 👈 確保整份表單一次打包
+})
       .then(() => {
         form.style.display = 'none';
         const msg = document.getElementById('success-msg');
