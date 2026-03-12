@@ -20,7 +20,6 @@
       --text-main: #ffffff;
       --text-sub: #8b949e;
       --border-color: #30363d;
-      --nav-bg: #ffffff;
     }
 
     body {
@@ -30,36 +29,20 @@
       margin: 0; padding: 0;
     }
 
-    /* 導覽列：點擊會跳轉到對應 ID 區塊 */
-    .navbar {
-      display: flex;
-      justify-content: center;
-      background: var(--nav-bg);
-      padding: 10px 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      gap: 40px;
+    /* 頁首容器調整：現在 Logo 是最高點 */
+    .header-container { 
+      width: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      padding: 40px 0 20px 0; /* 增加上方間距讓 Logo 呼吸 */
     }
-    .nav-item {
-      color: #333;
-      font-size: 18px;
-      font-weight: 800;
-      padding: 10px 5px;
-      cursor: pointer;
-      text-decoration: none;
-      border-bottom: 5px solid transparent;
-    }
-    .nav-item:hover {
-      border-bottom: 5px solid var(--accent-yellow);
-    }
-
-    .header-container { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
-    .logo { width: 150px; margin-bottom: 20px; }
+    .logo { width: 150px; margin-bottom: 25px; }
     
     .banner-wrapper { position: relative; width: 95%; max-width: 1000px; }
     .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; }
     
+    /* Banner 上的報名按鈕 */
     .banner-btn {
       position: absolute;
       left: 40px;
@@ -79,21 +62,23 @@
 
     .main-wrapper { max-width: 1000px; width: 95%; margin: 40px auto; }
 
-    /* 各區塊設定 */
+    /* 內容區塊 */
     section { padding: 60px 0; border-top: 1px solid var(--border-color); }
     section:first-of-type { border-top: none; padding-top: 0; }
 
     .title { font-size: 32px; font-weight: 800; color: var(--accent-blue); margin-bottom: 10px; }
     .price-tag { font-size: 28px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; }
     .block-title { font-size: 22px; color: var(--accent-yellow); margin-bottom: 20px; border-left: 4px solid var(--accent-yellow); padding-left: 10px; }
+    
     .workshop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
     .workshop-card { background: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); font-size: 14px; }
     .workshop-card h4 { color: var(--accent-blue); margin-top: 0; }
+    
     .timeline-item { position: relative; padding-left: 30px; margin-bottom: 20px; border-left: 2px solid var(--accent-blue); }
     .timeline-item::before { content: ''; position: absolute; left: -7px; top: 5px; width: 12px; height: 12px; background: var(--accent-blue); border-radius: 50%; }
     .day-label { font-weight: bold; color: var(--accent-yellow); margin-right: 10px; }
 
-    /* 表單區塊樣式 */
+    /* 表單區塊 */
     .form-section { 
       background: var(--card-bg); 
       padding: 40px; 
@@ -115,16 +100,11 @@
 </head>
 <body>
 
-  <nav class="navbar">
-    <a href="#info-top" class="nav-item">活動資訊</a>
-    <a href="#registration" class="nav-item">立刻報名</a>
-  </nav>
-
-  <div class="header-container" id="info-top">
+  <div class="header-container">
     <img src="https://i.ibb.co/gLwmcxSK/Lightup-png.png" alt="Logo" class="logo">
     <div class="banner-wrapper">
         <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
-        <button class="banner-btn" onclick="document.getElementById('registration').scrollIntoView({behavior: 'smooth'})">點擊報名</button>
+        <button class="banner-btn" onclick="document.getElementById('registration').scrollIntoView({behavior: 'smooth'})">立刻報名</button>
     </div>
   </div>
 
@@ -165,7 +145,7 @@
 
     <section id="registration">
       <div class="form-section">
-        <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">填寫報名表單</h2>
+        <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">立刻報名 BOOKING</h2>
         <form id="regForm">
           <div class="form-group">
             <label class="form-label">STEP 1 - 預約方案 PLAN</label>
@@ -189,7 +169,7 @@
             <label class="form-label">STEP 5 - 推薦人 REFERRER</label>
             <input type="text" name="ref" placeholder="選填">
           </div>
-          <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
+          <button type="submit" class="btn-submit" id="submitBtn">立刻報名 BOOKING</button>
         </form>
         <div id="success-msg"></div>
       </div>
@@ -198,7 +178,7 @@
   </div>
 
   <script>
-    // 表單提交邏輯
+    // 表單提交邏輯（GAS 連動）
     const form = document.getElementById('regForm');
     form.addEventListener('submit', function(e) {
       e.preventDefault();
