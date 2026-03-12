@@ -147,20 +147,34 @@
 
       const gasUrl = "https://script.google.com/macros/s/AKfycbxHlXNXDcEWCgErktxk2p4ZRv5LgQGoO6yRE3HjoRSexOVmALNxBgQht9tg2JAe_kpyXw/exec";
 
-      // 在 index.html 的 <script> 標籤內
-fetch(gasUrl, {
-  method: 'POST',
-  mode: 'no-cors', 
-  body: new URLSearchParams(new FormData(form)) // 👈 確保整份表單一次打包
-})
-      .then(() => {
-        form.style.display = 'none';
-        const msg = document.getElementById('success-msg');
-        msg.innerHTML = "<h4>感謝報名！</h4>後續請依指示做匯款確認。";
-        msg.style.display = 'block';
+      // 1. 將 FormData 轉換成單純的 JavaScript 物件，以便轉成 JSON
+      const plainFormData = Object.fromEntries(formData.entries());
+
+      // 2. 使用 fetch 發送 POST 請求 (移除 mode: 'no-cors'，並改傳 JSON 字串)
+      fetch(gasUrl, {
+        method: 'POST',
+        // 為了避免跨域 (CORS) 擋截，我們不特別設定 Content-Type 為 application/json，
+        // 而是直接傳字串，GAS 後端一樣可以用 JSON.parse 解析
+        body: JSON.stringify(plainFormData) 
+      })
+      .then(response => response.json()) // 解析 GAS 回傳的 JSON 訊息
+      .then(data => {
+        if (data.status === "success") {
+          // 報名成功，顯示成功訊息
+          form.style.display = 'none';
+          const msg = document.getElementById('success-msg');
+          msg.innerHTML = "<h4>🎉 感謝報名！</h4>後續請依指示做匯款確認。";
+          msg.style.display = 'block';
+        } else {
+          // 如果 GAS 發生錯誤 (例如寄信失敗)，顯示錯誤訊息
+          alert("系統發生錯誤：" + data.message);
+          btn.disabled = false;
+          btn.innerHTML = '立刻報名 BOOKING';
+        }
       })
       .catch(err => {
-        alert("系統忙碌中，請稍後再試！");
+        console.error(err);
+        alert("網路異常或系統忙碌中，請稍後再試！");
         btn.disabled = false;
         btn.innerHTML = '立刻報名 BOOKING';
       });
