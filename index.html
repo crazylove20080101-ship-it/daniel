@@ -7,7 +7,10 @@
   <title>2026 LIGHT UP! 街舞事工研習營</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    html { scroll-behavior: smooth; }
+    /* 讓整個網頁捲動時更平滑 */
+    html {
+      scroll-behavior: smooth;
+    }
 
     :root {
       --bg-color: #0d1117;
@@ -17,7 +20,6 @@
       --text-main: #ffffff;
       --text-sub: #8b949e;
       --border-color: #30363d;
-      --nav-bg: #ffffff;
     }
 
     body {
@@ -27,178 +29,250 @@
       margin: 0; padding: 0;
     }
 
-    /* --- 1. 頁首 Navbar 樣式 --- */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--nav-bg);
-      padding: 10px 5%;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    /* 頁首容器 */
+    .header-container { 
+      width: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      padding: 40px 0 20px 0;
     }
-    .nav-logo { height: 40px; cursor: pointer; }
-    .nav-links { display: flex; gap: 30px; }
-    .nav-item {
-      color: #333;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      border-bottom: 3px solid transparent;
-      padding-bottom: 5px;
-    }
-    .nav-item:hover, .nav-item.active {
-      border-bottom: 3px solid var(--accent-yellow);
-    }
-
-    /* 容器設定 */
-    .main-wrapper { max-width: 1000px; width: 95%; margin: 20px auto; }
-    section { padding: 40px 0; display: none; } /* 預設隱藏，由 JS 控制 */
-    section.active { display: block; animation: fadeIn 0.5s ease; }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* Banner 樣式 */
-    .banner-wrapper { position: relative; width: 100%; margin-bottom: 30px; }
-    .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .banner-btn {
-      position: absolute; left: 40px; bottom: 40px;
-      padding: 12px 25px; background: white; color: black;
-      font-weight: bold; border-radius: 6px; border: none;
-      cursor: pointer; font-size: 16px; transition: 0.3s;
-    }
-    .banner-btn:hover { background: var(--accent-yellow); transform: scale(1.05); }
-
-    /* 活動詳情專屬樣式 */
-    .video-container {
-      position: relative; width: 100%; aspect-ratio: 16 / 9;
-      background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 40px;
-    }
-    .video-container iframe { width: 100%; height: 100%; border: none; }
-
-    .details-text-area { line-height: 1.8; color: var(--text-main); font-size: 17px; margin-bottom: 40px; }
+    .logo { width: 150px; margin-bottom: 25px; }
     
-    .image-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0;
+    .banner-wrapper { position: relative; width: 95%; max-width: 1000px; }
+    .banner { width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: block; }
+    
+    .banner-btn {
+      position: absolute;
+      left: 40px;
+      bottom: 40px;
+      padding: 12px 25px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: 0.3s;
     }
-    .image-grid img {
-      width: 100%; border-radius: 10px; border: 1px solid var(--border-color);
-      transition: 0.3s; cursor: zoom-in;
-    }
-    .image-grid img:hover { transform: scale(1.02); }
+    .banner-btn:hover { transform: scale(1.05); background: var(--accent-yellow); }
 
-    /* 原有組件樣式保持 (Schedule, Form etc.) */
+    .main-wrapper { max-width: 1000px; width: 95%; margin: 40px auto; }
+
+    /* 內容區塊 */
+    section { padding: 60px 0; border-top: 1px solid var(--border-color); }
+    section:first-of-type { border-top: none; padding-top: 0; }
+
     .title { font-size: 32px; font-weight: 800; color: var(--accent-blue); margin-bottom: 10px; }
     .price-tag { font-size: 28px; font-weight: bold; color: var(--accent-yellow); margin-bottom: 30px; }
     .block-title { font-size: 22px; color: var(--accent-yellow); margin-bottom: 20px; border-left: 4px solid var(--accent-yellow); padding-left: 10px; }
     
-    .day-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-    .day-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-    .day-num { background: var(--accent-blue); color: white; padding: 2px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; }
-    .day-theme { color: var(--accent-yellow); font-weight: bold; font-size: 18px; }
-    .schedule-item { display: flex; gap: 15px; font-size: 15px; margin-bottom: 12px; }
-    .time { color: var(--accent-blue); font-family: monospace; font-weight: bold; min-width: 90px; }
+    .workshop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+    .workshop-card { background: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid var(--border-color); font-size: 14px; }
+    .workshop-card h4 { color: var(--accent-blue); margin-top: 0; }
+
+    /* --- 新增：詳細活動流程樣式 --- */
+    .day-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .day-num {
+      background: var(--accent-blue);
+      color: white;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .day-theme {
+      color: var(--accent-yellow);
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .schedule-sub-title {
+      font-size: 14px;
+      color: var(--accent-blue);
+      margin: 15px 0 10px 0;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .schedule-item {
+      display: flex;
+      gap: 15px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .time {
+      color: var(--accent-blue);
+      font-family: monospace;
+      font-weight: bold;
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+    .desc { color: var(--text-main); }
     .highlight { color: var(--accent-yellow); font-weight: bold; }
 
+    /* 表單區塊 */
     .form-section { 
-      background: var(--card-bg); padding: 40px; border-radius: 20px; 
-      border: 1px solid var(--border-color); max-width: 600px; margin: 0 auto; 
+      background: var(--card-bg); 
+      padding: 40px; 
+      border-radius: 20px; 
+      border: 1px solid var(--border-color); 
+      max-width: 600px;
+      margin: 40px auto;
     }
-    .form-group { margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-label { display: block; font-size: 12px; color: var(--accent-blue); margin-bottom: 8px; font-weight: bold; }
     input, select { width: 100%; padding: 12px; background: #0d1117; border: 1px solid var(--border-color); border-radius: 8px; color: white; box-sizing: border-box; }
-    .btn-submit { width: 100%; padding: 16px; background-color: var(--accent-yellow); color: #000; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+    .btn-submit { width: 100%; padding: 16px; background-color: var(--accent-yellow); color: #000; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(249, 212, 35, 0.4); }
 
-    #success-msg { display: none; text-align: center; background: rgba(46, 125, 50, 0.2); padding: 20px; border-radius: 10px; color: #81c784; }
+    #success-msg { display: none; text-align: center; background: rgba(46, 125, 50, 0.2); border: 1px solid #4caf50; padding: 20px; border-radius: 10px; color: #81c784; margin-top: 20px; }
 
-    @media (max-width: 768px) {
-      .nav-links { gap: 15px; }
-      .image-grid { grid-template-columns: 1fr; }
-      .banner-btn { left: 20px; bottom: 20px; }
-      .schedule-item { flex-direction: column; gap: 2px; }
+    @media (max-width: 768px) { 
+      .workshop-grid { grid-template-columns: 1fr; } 
+      .banner-btn { left: 20px; bottom: 20px; } 
+      .schedule-item { flex-direction: column; gap: 2px; margin-bottom: 8px; }
+      .day-header { flex-direction: column; align-items: flex-start; gap: 5px; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <img src="https://i.ibb.co/gLwmcxSK/Lightup-png.png" alt="Logo" class="nav-logo" onclick="togglePage('home')">
-    <div class="nav-links">
-      <a class="nav-item" id="nav-details" onclick="togglePage('details')">活動詳情</a>
-      <a class="nav-item" id="nav-form" onclick="togglePage('form')">報名表單</a>
+  <div class="header-container">
+    <img src="https://i.ibb.co/gLwmcxSK/Lightup-png.png" alt="Logo" class="logo">
+    <div class="banner-wrapper">
+        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
+        <button class="banner-btn" onclick="document.getElementById('registration').scrollIntoView({behavior: 'smooth'})">立刻報名</button>
     </div>
-  </nav>
+  </div>
 
   <div class="main-wrapper">
     
-    <section id="page-home" class="active">
-      <div class="banner-wrapper">
-        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Banner" class="banner">
-        <button class="banner-btn" onclick="togglePage('form')">立刻報名</button>
-      </div>
-      
+    <section>
       <div class="title">2026 LIGHT UP! 第二屆街舞事工研習營</div>
       <div class="price-tag">$ 2500 <span>/ 超早鳥票</span></div>
+      
+      <p><i class="fa-solid fa-location-dot" style="color:var(--accent-yellow)"></i> 救世傳播協會 (台北市中山區大直街62巷10號)</p>
       <p><i class="fa-solid fa-calendar-days" style="color:var(--accent-yellow)"></i> 2026/06/18(四) - 06/20(六)</p>
 
-      <div class="block-title">活動流程 SCHEDULE</div>
-      <div class="day-card">
-        <div class="day-header"><span class="day-num">Day 1</span> <span class="day-theme">對齊呼召，進入氛圍</span></div>
-        <div class="schedule-item"><span class="time">19:00–21:30</span><span class="desc">報到、大會舞教學、異象信息</span></div>
+      <div class="content-block">
+        <div class="block-title">活動架構</div>
+        <div class="workshop-grid">
+          <div class="workshop-card">
+            <h4>作品類</h4>
+            <p>目標：完成一支敬拜舞/福音舞作品。</p>
+          </div>
+          <div class="workshop-card">
+            <h4>服事類</h4>
+            <p>目標：建立敬拜舞者的身分認同與服事能力。</p>
+          </div>
+          <div class="workshop-card">
+            <h4>技術類</h4>
+            <p>目標：提升街舞技巧，讓技術成為敬拜的基礎。</p>
+          </div>
+        </div>
       </div>
-      <div style="text-align: center; margin-top: 20px;">
-        <button class="nav-item" style="background:none; border:1px solid var(--accent-blue); color:var(--accent-blue); padding:10px 20px; border-radius:20px;" onclick="togglePage('details')">查看詳細行程內容 →</button>
+
+      <div class="content-block">
+        <div class="block-title">活動流程 SCHEDULE</div>
+        
+        <div class="day-card">
+          <div class="day-header">
+            <span class="day-num">Day 1</span>
+            <span class="day-theme">對齊呼召，進入氛圍</span>
+          </div>
+          <div class="schedule-list">
+            <div class="schedule-item"><span class="time">19:00–19:40</span><span class="desc">報到、迎會、互動暖身</span></div>
+            <div class="schedule-item"><span class="time">19:40–20:20</span><span class="desc">⼤會舞教學（全體共同學習）</span></div>
+            <div class="schedule-item"><span class="time">20:20–20:50</span><span class="desc highlight">異象與呼召信息（街舞 × 敬拜 × ⽂化使命）</span></div>
+            <div class="schedule-item"><span class="time">20:50–21:20</span><span class="desc">⼩組分享與禱告回應</span></div>
+            <div class="schedule-item"><span class="time">21:20–21:30</span><span class="desc">說明隔⽇課程線路與注意事項</span></div>
+          </div>
+        </div>
+
+        <div class="day-card">
+          <div class="day-header">
+            <span class="day-num">Day 2</span>
+            <span class="day-theme">整全裝備（三條線路 × 四堂課程）</span>
+          </div>
+          <div class="schedule-sub-title">【 上午 / 下午 】</div>
+          <div class="schedule-list">
+            <div class="schedule-item"><span class="time">09:00–09:15</span><span class="desc">早禱與暖身</span></div>
+            <div class="schedule-item"><span class="time">09:15–10:45</span><span class="desc highlight">⼯作坊 ①（依選課線路分班）</span></div>
+            <div class="schedule-item"><span class="time">11:00–12:30</span><span class="desc highlight">⼯作坊 ②</span></div>
+            <div class="schedule-item"><span class="time">13:45–15:15</span><span class="desc highlight">⼯作坊 ③</span></div>
+            <div class="schedule-item"><span class="time">15:30–17:00</span><span class="desc highlight">⼯作坊 ④</span></div>
+          </div>
+          <div class="schedule-sub-title">【 晚上｜HIPHOP Worship Night 】</div>
+          <div class="schedule-list">
+            <div class="schedule-item"><span class="time">19:00–21:00</span><span class="desc">
+              敬拜與舞蹈帶領<br>
+              <small style="color:var(--text-sub)">• ⾒證分享與福⾳信息<br>• ⾃由舞動、禱告回應</small>
+            </span></div>
+          </div>
+        </div>
+
+        <div class="day-card">
+          <div class="day-header">
+            <span class="day-num">Day 3</span>
+            <span class="day-theme">呈現與差派</span>
+          </div>
+          <div class="schedule-list">
+            <div class="schedule-item"><span class="time">09:00–10:30</span><span class="desc">⼤會舞複習與 MV 拍攝</span></div>
+            <div class="schedule-item"><span class="time">10:30–12:00</span><span class="desc">友誼 Battle（技術交流與關係建⽴）</span></div>
+            <div class="schedule-item"><span class="time">12:00–13:30</span><span class="desc">午餐與交流</span></div>
+            <div class="schedule-item"><span class="time">13:30–15:15</span><span class="desc highlight">LIGHT UP TALK（⽂化使命 9 分鐘）＋ 媒合時間</span></div>
+            <div class="schedule-item"><span class="time">15:15–15:45</span><span class="desc">差派禱告與結業證書頒發</span></div>
+            <div class="schedule-item"><span class="time">15:45–16:00</span><span class="desc">合照與賦歸</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="page-details">
-      <div class="block-title">活動宣傳影片 VIDEO</div>
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-      </div>
-
-      <div class="block-title">事工異象 VISION</div>
-      <div class="details-text-area">
-        <p>這不僅是一個街舞營隊，更是一個關於「身份」的追尋。在 2026 LIGHT UP! 中，我們致力於結合專業的舞蹈技術與基督信仰，讓每一位舞者都能在舞台上成為傳遞真理的出口。</p>
-        <p>本次研習營特別邀請海內外導師，針對「敬拜舞蹈」、「福音創作」及「文化使命」進行深度探討。我們相信，當技術達到極致，它便能成為敬拜最純粹的祭壇。</p>
-      </div>
-
-      <div class="block-title">活動精彩剪影 GALLERY</div>
-      <div class="image-grid">
-        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Detail 1">
-        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Detail 2">
-        <img src="https://i.ibb.co/V0zhDTR2/all-post.png" alt="Detail 3">
-      </div>
-
-      <div class="block-title">詳細行程流程 SCHEDULE</div>
-      <div class="day-card">
-        <div class="day-header"><span class="day-num">Day 1</span> <span class="day-theme">對齊呼召，進入氛圍</span></div>
-        <div class="schedule-item"><span class="time">19:00–19:40</span><span class="desc">報到、迎會、互動暖身</span></div>
-        <div class="schedule-item"><span class="time">20:20–20:50</span><span class="desc highlight">異象與呼召信息</span></div>
-      </div>
-      </section>
-
-    <section id="page-form">
+    <section id="registration">
       <div class="form-section">
         <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">立刻報名 BOOKING</h2>
         <form id="regForm">
           <div class="form-group">
-            <label style="color:var(--accent-blue); font-size:12px; font-weight:bold;">方案 PLAN</label>
+            <label class="form-label">STEP 1 - 預約方案 PLAN</label>
             <select name="plan">
               <option value="超早鳥票 $2500 3日營隊">超早鳥票 $2500 3日營隊</option>
             </select>
           </div>
           <div class="form-group">
-            <input type="text" name="name" placeholder="請輸入姓名 NAME" required>
+            <label class="form-label">STEP 2 - 姓名 NAME</label>
+            <input type="text" name="name" placeholder="請輸入姓名" required>
           </div>
           <div class="form-group">
-            <input type="tel" name="phone" placeholder="電話 PHONE" required>
+            <label class="form-label">STEP 3 - 電話 PHONE</label>
+            <input type="tel" name="phone" placeholder="0912-345-678" required>
           </div>
           <div class="form-group">
-            <input type="email" name="email" placeholder="郵件信箱 EMAIL" required>
+            <label class="form-label">STEP 4 - 郵件信箱 EMAIL</label>
+            <input type="email" name="email" placeholder="example@mail.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">STEP 5 - 推薦人 REFERRER</label>
+            <input type="text" name="ref" placeholder="選填">
           </div>
           <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
         </form>
@@ -209,25 +283,6 @@
   </div>
 
   <script>
-    // --- 頁面切換邏輯 ---
-    function togglePage(pageId) {
-      // 1. 隱藏所有 section
-      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
-      // 2. 顯示目標 section
-      const target = document.getElementById('page-' + pageId);
-      target.classList.add('active');
-      
-      // 3. 更新 Navbar 狀態
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-      if(document.getElementById('nav-' + pageId)) {
-        document.getElementById('nav-' + pageId).classList.add('active');
-      }
-
-      // 4. 捲動回頂部
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // --- GAS 表單提交 (維持你原本的邏輯) ---
     const form = document.getElementById('regForm');
     form.addEventListener('submit', function(e) {
       e.preventDefault();
