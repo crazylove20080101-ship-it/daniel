@@ -286,21 +286,45 @@
           </div>
         </div>
       </section>
+<section id="registration">
+  <div class="form-section">
+    <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">個人報名 BOOKING</h2>
+    
+    <p style="text-align: center; font-size: 14px; margin-bottom: 20px; color: var(--text-sub);">
+      3 人以上同行嗎？ <span style="color: var(--accent-blue); cursor: pointer; text-decoration: underline; font-weight: bold;" onclick="switchPage('group')">團體報名請點這</span>
+    </p>
 
-      <section id="registration">
-        <div class="form-section">
-          <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">立刻報名 BOOKING</h2>
-          <form id="regForm">
-            <div class="form-group"><label class="form-label">方案 PLAN</label><select name="plan"><option value="超早鳥票 $1700 3日營隊">超早鳥票 $1700 3日營隊(三月-六月)</option></select></div>
-            <div class="form-group"><input type="text" name="name" placeholder="請輸入姓名 NAME" required></div>
-            <div class="form-group"><input type="tel" name="phone" placeholder="電話 PHONE" required></div>
-            <div class="form-group"><input type="email" name="email" placeholder="郵件信箱 EMAIL" required></div>
-            <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
-          </form>
-          <div id="success-msg"></div>
-        </div>
-      </section>
-    </div>
+    <form id="regForm">
+      <input type="hidden" name="formType" value="personal">
+
+      <div class="form-group">
+        <label class="form-label">方案 PLAN</label>
+        <select name="plan">
+          <option value="超早鳥票 $1700 3日營隊">超早鳥票 $1700 3日營隊(三月-六月)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input type="text" name="name" placeholder="請輸入姓名 NAME" required>
+      </div>
+
+      <div class="form-group">
+        <input type="tel" name="phone" placeholder="電話 PHONE" required>
+      </div>
+
+      <div class="form-group">
+        <input type="email" name="email" placeholder="郵件信箱 EMAIL" required>
+      </div>
+
+      <div class="form-group">
+        <input type="text" name="ref" placeholder="大使折扣碼 (選填)">
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
+    </form>
+    <div id="success-msg"></div>
+  </div>
+</section>
 
     <div id="section-details" class="page-section">
       <div class="block-title">活動宣傳影片 VIDEO</div>
