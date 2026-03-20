@@ -322,9 +322,10 @@
 
       <button type="submit" class="btn-submit" id="submitBtn">提交報名 BOOKING</button>
     </form>
-    <div id="success-msg"></div>
-  </div>
-</section>
+    <div id="success-msg"><h4>🎉 感謝報名！</h4></div>
+        </div>
+      </section>
+    </div>
 
     <div id="section-details" class="page-section">
       <div class="block-title">活動宣傳影片 VIDEO</div>
@@ -391,17 +392,14 @@
         <p>建立 街舞 × 信仰 × 城市文化的連結網絡</p>
       </div>
     </div>
-  </div>
 
   <div id="section-group" class="page-section">
   <section id="group-registration">
     <div class="form-section">
       <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">團體報名 GROUP</h2>
       <p style="text-align:center; font-size:14px; color:var(--text-sub); margin-bottom:25px;">請填寫主要聯絡人資訊與成員名單</p>
-      
       <form id="groupRegForm">
         <input type="hidden" name="formType" value="group">
-
         <div class="form-group">
           <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">方案 PLAN</label>
           <select name="plan">
@@ -409,7 +407,6 @@
             <option value="團體優惠方案 (請洽專員)">團體優惠方案 (請洽專員)</option>
           </select>
         </div>
-
         <div class="form-group">
           <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">成員姓名 (前三位必填)</label>
           <input type="text" name="name1" placeholder="成員 1 姓名 (必填)" required style="margin-bottom:10px;">
@@ -418,7 +415,6 @@
           <input type="text" name="name4" placeholder="成員 4 姓名 (選填)" style="margin-bottom:10px;">
           <input type="text" name="name5" placeholder="成員 5 姓名 (選填)">
         </div>
-
         <div class="form-group">
           <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">聯絡電話 PHONE</label>
           <input type="tel" name="phone" placeholder="主要聯絡人電話" required>
@@ -441,10 +437,8 @@
           <p>後續請依指示做匯款確認</p>
       </div>
     </div>
-  </section>
-</div>
 
-  <script>
+  </div> <script>
     function switchPage(pageId) {
       // 1. 強制讓所有 section 消失
       const sections = document.querySelectorAll('.page-section');
