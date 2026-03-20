@@ -145,6 +145,7 @@
       <div id="link-home" class="nav-item active" onclick="switchPage('home')">首頁</div>
       <div id="link-details" class="nav-item" onclick="switchPage('details')">活動詳情</div>
       <div id="link-ambassador" class="nav-item" onclick="switchPage('ambassador')">成為大使</div>
+      <div id="link-group" class="nav-item" onclick="switchPage('group')">團體報名</div>
     </div>
   </nav>
 
@@ -368,6 +369,57 @@
     </div>
   </div>
 
+  <div id="section-group" class="page-section">
+  <section id="group-registration">
+    <div class="form-section">
+      <h2 style="color: var(--accent-yellow); margin-top: 0; text-align: center;">團體報名 GROUP</h2>
+      <p style="text-align:center; font-size:14px; color:var(--text-sub); margin-bottom:25px;">請填寫主要聯絡人資訊與成員名單</p>
+      
+      <form id="groupRegForm">
+        <input type="hidden" name="formType" value="group">
+
+        <div class="form-group">
+          <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">方案 PLAN</label>
+          <select name="plan">
+            <option value="超早鳥票 $1700 3日營隊">超早鳥票 $1700 3日營隊(三月-六月)</option>
+            <option value="團體優惠方案 (請洽專員)">團體優惠方案 (請洽專員)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">成員姓名 (前三位必填)</label>
+          <input type="text" name="name1" placeholder="成員 1 姓名 (必填)" required style="margin-bottom:10px;">
+          <input type="text" name="name2" placeholder="成員 2 姓名 (必填)" required style="margin-bottom:10px;">
+          <input type="text" name="name3" placeholder="成員 3 姓名 (必填)" required style="margin-bottom:10px;">
+          <input type="text" name="name4" placeholder="成員 4 姓名 (選填)" style="margin-bottom:10px;">
+          <input type="text" name="name5" placeholder="成員 5 姓名 (選填)">
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">聯絡電話 PHONE</label>
+          <input type="tel" name="phone" placeholder="主要聯絡人電話" required>
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">郵件信箱 EMAIL</label>
+          <input type="email" name="email" placeholder="主要聯絡人 Email" required>
+        </div>
+
+        <div class="form-group">
+          <label style="color:var(--accent-blue); display:block; margin-bottom:8px;">大使折扣碼 (選填)</label>
+          <input type="text" name="discountCode" placeholder="如果有推薦折扣碼請輸入">
+        </div>
+
+        <button type="submit" class="btn-submit" id="groupSubmitBtn">提交團體報名 GROUP</button>
+      </form>
+      <div id="group-success-msg" style="display:none; text-align:center; background: rgba(46, 125, 50, 0.2); padding: 20px; border-radius: 10px; color: #81c784; margin-top: 20px;">
+          <h4>🎉 感謝團體報名！</h4>
+          <p>後續請依指示做匯款確認</p>
+      </div>
+    </div>
+  </section>
+</div>
+
   <script>
     function switchPage(pageId) {
       // 1. 強制讓所有 section 消失
@@ -428,6 +480,37 @@
         } else { alert("錯誤：" + data.message); btn.disabled = false; btn.innerHTML = '立刻報名 BOOKING'; }
       }).catch(err => { alert("網路異常！"); btn.disabled = false; });
     });
+    // 團體表單提交處理
+const groupForm = document.getElementById('groupRegForm');
+groupForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('groupSubmitBtn');
+  const formData = new FormData(groupForm);
+  
+  btn.innerHTML = '報名傳送中...';
+  btn.disabled = true;
+
+  // 這裡是你的 GAS 部署網址
+  const gasUrl = "https://script.google.com/macros/s/AKfycbxHlXNXDcEWCgErktxk2p4ZRv5LgQGoO6yRE3HjoRSexOVmALNxBgQht9tg2JAe_kpyXw/exec";
+  const plainFormData = Object.fromEntries(formData.entries());
+
+  fetch(gasUrl, {
+    method: 'POST',
+    mode: 'no-cors', // 配合 Vercel 到 GAS 的跨域請求
+    body: JSON.stringify(plainFormData)
+  })
+  .then(() => {
+    // 由於 no-cors 模式無法讀取回傳值，通常直接視為成功
+    groupForm.style.display = 'none';
+    document.getElementById('group-success-msg').style.display = 'block';
+  })
+  .catch(err => {
+    console.error(err);
+    alert("系統忙碌中，請稍後再試或聯繫主辦單位");
+    btn.disabled = false;
+    btn.innerHTML = '提交團體報名 GROUP';
+  });
+});
   </script>
 </body>
 </html>
